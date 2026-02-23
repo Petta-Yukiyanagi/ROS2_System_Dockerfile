@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Cat Robot System
+Comment=ROS2 + Roomba + CAT UI
+Exec=/bin/bash -c "$HOME/cat-iot-robot-ui/run.sh"
+Terminal=true
+Icon=utilities-terminal
+Categories=Development;
