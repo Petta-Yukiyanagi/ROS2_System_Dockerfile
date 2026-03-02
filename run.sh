@@ -1,119 +1,92 @@
 #!/usr/bin/env bash
-set -e
+# エラーが発生した時点で停止し、未定義変数を参照させない設定
+set -euo pipefail
 
-# ============================================================
-# Cat Robot System Launcher
-# - Docker build (if needed)
-# - Docker run
-# - ROS2 + Roomba + YDLidar + CAT UI
-# - X11 GUI 対応（ダブルクリック起動）
-# ============================================================
+# --- 終了時にログを確認できるよう停止する関数 ---
+function pause_exit(){
+   # スクリプトが正常・異常に関わらず終了時に実行
+   echo ""
+   echo "======================================="
+   echo " 処理が終了しました。ログを確認してください。"
+   echo " Enterキーを押すとウィンドウを閉じます。"
+   echo "======================================="
+   read -r
+}
+trap pause_exit EXIT
 
-echo "======================================="
-echo "  Cat Robot System Launcher"
-echo "======================================="
+# 実行コマンドのデバッグ表示（配布時はコメントアウトしてもOK）
+set -x 
+exec 2>&1 
 
-# ============================================================
-# GUI ユーザー・DISPLAY 自動検出
-# ============================================================
+# スクリプト自身の場所を特定し、カレントディレクトリを移動
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
-# GUI セッションのユーザー（desktop起動対応）
-GUI_USER=$(logname 2>/dev/null || whoami)
+# 1. ホスト側でのGUI表示許可
+xhost +local:docker > /dev/null
 
-# HOME ディレクトリ取得
-GUI_HOME=$(getent passwd "$GUI_USER" | cut -d: -f6)
+# ------------------------------------------------------------
+# 2. イメージの自動ビルド（イメージがない場合のみ実行）
+# ------------------------------------------------------------
+LOCAL_IMAGE="cat_robot_local"
 
-# DISPLAY（Raspberry Pi OS は :0）
-export DISPLAY=:0
-
-# XAUTHORITY 自動設定
-if [ -f "$GUI_HOME/.Xauthority" ]; then
-  export XAUTHORITY="$GUI_HOME/.Xauthority"
+if [[ "$(docker images -q $LOCAL_IMAGE 2> /dev/null)" == "" ]]; then
+  echo "[INFO] 初回起動を検知しました。イメージのビルドを開始します..."
+  # Dockerfile がカレントディレクトリにある前提
+  docker build -t "$LOCAL_IMAGE" .
 else
-  echo "[WARN] .Xauthority not found for user: $GUI_USER"
+  echo "[INFO] ビルド済みイメージ $LOCAL_IMAGE を使用します。"
 fi
 
-echo "[INFO] GUI_USER=$GUI_USER"
-echo "[INFO] DISPLAY=$DISPLAY"
-echo "[INFO] XAUTHORITY=$XAUTHORITY"
+# ------------------------------------------------------------
+# 3. ホスト側での設定選択 (Zenity)
+# ------------------------------------------------------------
+# 表示モードの選択
+GUI_MODE=$(zenity --list --title="Cat Robot - Display Mode" \
+  --text="使用する画面モードを選択してください" --radiolist \
+  --column="選択" --column="モード" \
+  TRUE "HDMI（展示・現地）" FALSE "RealVNC（開発・遠隔）" \
+  --height=220 --width=360 2>/dev/null || echo "HDMI")
 
-# ============================================================
-# Docker 設定
-# ============================================================
-
-IMAGE="catui:latest"
-CONTAINER="cat-iot-robot"
-
-# ============================================================
-# X11 アクセス許可（Docker → ホストGUI）
-# ============================================================
-
-# DISPLAY が有効な状態で xhost 実行
-if command -v xhost >/dev/null 2>&1; then
-  xhost +si:localuser:docker >/dev/null 2>&1 || true
-else
-  echo "[WARN] xhost not found"
+# USBデバイスの自動検出
+TTY_DEVICES=($(ls /dev/ttyUSB* 2>/dev/null || true))
+if [ ${#TTY_DEVICES[@]} -lt 2 ]; then
+  zenity --error --text="ttyUSBデバイスが不足しています（RoombaとLiDARの2つが必要です）。"
+  exit 1
 fi
 
-# ============================================================
-# Docker image build（なければ）
-# ============================================================
+# 各デバイスの選択
+ROOMBA_TTY=$(zenity --list --title="Roomba 接続" --text="Roombaのポートを選択" \
+  --column="デバイス" "${TTY_DEVICES[@]}" --height=300)
+[ -z "$ROOMBA_TTY" ] && exit 1
 
-if ! docker image inspect ${IMAGE} >/dev/null 2>&1; then
-  echo "[INFO] Docker image not found. Building..."
-  docker build -t ${IMAGE} .
-else
-  echo "[INFO] Docker image found."
+LIDAR_TTY=$(zenity --list --title="LiDAR 接続" --text="LiDARのポートを選択" \
+  --column="デバイス" "${TTY_DEVICES[@]}" --height=300)
+[ -z "$LIDAR_TTY" ] && exit 1
+
+# 同一デバイス選択チェック
+if [ "$ROOMBA_TTY" = "$LIDAR_TTY" ]; then
+  zenity --error --text="同じポートは選択できません。別々のデバイスを選んでください。"
+  exit 1
 fi
 
-# ============================================================
-# 既存コンテナ削除
-# ============================================================
+# ------------------------------------------------------------
+# 4. Docker 起動
+# ------------------------------------------------------------
+# 既存の同名コンテナがあれば強制削除（名前衝突を回避）
+docker rm -f cat_robot_sys 2>/dev/null || true
 
-if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER}$"; then
-  echo "[INFO] Removing existing container..."
-  docker rm -f ${CONTAINER} >/dev/null
-fi
-
-# ============================================================
-# USB デバイス検出（Roomba）
-# ============================================================
-
-USB_DEVICE=""
-
-if [ -e /dev/ttyUSB0 ]; then
-  USB_DEVICE="/dev/ttyUSB0"
-elif [ -e /dev/ttyUSB1 ]; then
-  USB_DEVICE="/dev/ttyUSB1"
-else
-  echo "[WARN] No /dev/ttyUSB* found. Roomba may not be connected."
-fi
-
-if [ -n "$USB_DEVICE" ]; then
-  echo "[INFO] USB device detected: $USB_DEVICE"
-fi
-
-# ============================================================
-# Docker run（UI起動込み）
-# ============================================================
-
-echo "[INFO] Starting container..."
-
-docker run -d \
-  --name ${CONTAINER} \
-  --privileged \
-  ${USB_DEVICE:+--device=$USB_DEVICE} \
-  -e DISPLAY=${DISPLAY} \
-  -e XAUTHORITY=${XAUTHORITY} \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -v ${XAUTHORITY}:${XAUTHORITY}:ro \
-  ${IMAGE} \
-  /usr/local/bin/run-catui
-
-echo "======================================="
-echo " Cat Robot System started."
-echo " UI should now be visible."
-echo "======================================="
-echo
-echo "Press ENTER to close this window."
-read
+# --device によるマッピングで、コンテナ内でのリンク作成を不要にしています
+docker run -it --rm \
+    --name cat_robot_sys \
+    --privileged \
+    --net=host \
+    -e DISPLAY="$DISPLAY" \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v /dev:/dev \
+    -v "$SCRIPT_DIR/ros2_ws:/opt/ros2_ws" \
+    -e CAT_MODE="$([[ "$GUI_MODE" == *"HDMI"* ]] && echo "EXHIBITION" || echo "DEVELOPMENT")" \
+    -e CAT_DEBUG="$([[ "$GUI_MODE" == *"HDMI"* ]] && echo "0" || echo "1")" \
+    --device="$ROOMBA_TTY:/dev/roomba" \
+    --device="$LIDAR_TTY:/dev/lidar" \
+    "$LOCAL_IMAGE"

@@ -79,6 +79,10 @@ Host OS (Raspberry Pi OS / Ubuntu + X11)
 
 ## 起動方式について（重要）
 
+### Dockerをインストールする
+
+
+
 ### ダブルクリック起動時の挙動
 
 デスクトップから起動すると、以下が **毎回自動で実行**されます。
@@ -91,20 +95,33 @@ Host OS (Raspberry Pi OS / Ubuntu + X11)
 
 👉 **起動するたびに Docker コンテナは作り直されます**
 
-### この設計の理由
-
-- ROS2・実機デバイス制御は「クリーン起動」が最も安全  
-- USB デバイスの掴みっぱなしを防止  
-- 展示・配布先でのトラブルを最小化  
-- 状態不整合を避ける  
-
-展示・研究用途では  
-**最も事故りにくい構成**を採用しています。
-
 ---
 
 ## 使い方
 
+① システムの更新と依存ツールのインストール
+DockerおよびGUI選択ツール（Zenity）をインストールします。ターミナルを開いて以下を貼り付けてください。
+
+
+### Dockerのインストール
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+### ユーザー権限の設定（Dockerをsudoなしで動かすため）
+```bash
+sudo usermod -aG docker $USER
+sudo usermod -aG dialout $USER
+```
+### GUIツールのインストール
+```bash
+sudo apt-get update
+sudo apt-get install -y zenity x11-xserver-utils
+```
+### 設定を反映させるため、一度再起動してください
+```bash
+sudo reboot
+```
 ### ① リポジトリを取得する
 
 ```bash
@@ -146,39 +163,17 @@ cp desktop/cat-robot.desktop ~/Desktop/
 2. 初回のみ「信頼して実行しますか？」と聞かれたら  
    → **「信頼する」** を選択  
 3. ターミナルが開き、Docker の起動ログが表示されます  
-4. 数秒後、CAT UI が画面に表示されます  
 
-👉 **以降は毎回ダブルクリックするだけで起動できます**
+4. GUIが出てくるので、画面モードとUSBポートを選択します。
 
----
-
-## .desktop ファイルについて（参考）
-
-通常は編集不要です。
-
-```ini
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Cat Robot System
-Comment=ROS2 + Roomba + CAT UI
-Exec=/bin/bash -c "$HOME/ROS2_System_Dockerfile/run.sh"
-Terminal=true
-Icon=utilities-terminal
-Categories=Robotics;
-```
+5. 数秒後、CAT UI が画面に表示されます  
 
 ---
 
 ## FAQ
 
-### Q. リポジトリを別の場所に置きたい場合は？
-
-`.desktop` ファイルの `Exec=` を変更してください。
-
-```ini
-Exec=/bin/bash -c "$HOME/my_robot/run.sh"
-```
+### Q. USBデバイスが1つしか認識されません
+Roomba と LiDAR の両方が接続されているか確認してください。システムは安全のため、2つ以上のシリアルデバイスを検出できないとエラーを出す仕様になっています。
 
 ---
 

@@ -20,6 +20,11 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # =========================================================
+# 開発・GUI用ユーザー作成（VS Code / X11 両対応）
+# =========================================================
+RUN useradd -m -u 1000 -s /bin/bash user
+
+# =========================================================
 # Nav2（自律移動用）
 # =========================================================
 RUN apt-get update && \
@@ -78,17 +83,56 @@ WORKDIR /opt/catui/CAT-UI-ROS2node
 RUN chmod +x CAT-UI
 
 # =========================================================
-# UI + ROS2 起動スクリプト
+# CAT UI IPC ディレクトリの権限調整（重要）
+# =========================================================
+RUN mkdir -p /opt/catui/CAT-UI-ROS2node/data/ipc && \
+    chmod 1777 /opt/catui/CAT-UI-ROS2node/data/ipc
+
+# =========================================================
+# 自作 ROS2 ワークスペース（catui_bridge を clone）
+# =========================================================
+RUN mkdir -p /opt/ros2_ws/src && \
+    git clone --depth 1 https://github.com/Petta-Yukiyanagi/CAT-UI-ROS2bridge-node.git \
+      /opt/ros2_ws/src/catui_bridge && \
+    chmod -R a+rwx /opt/ros2_ws
+
+# =========================================================
+# UI + ROS2 起動スクリプト（ros2_ws 初回ビルドのみ）
 # =========================================================
 RUN printf '%s\n' \
 '#!/usr/bin/env bash' \
-'set -e' \
-'export DISPLAY=${DISPLAY:-:0}' \
+'set -eo pipefail' \
+'' \
+'echo "[INFO] run-catui started"' \
+'' \
+'# ==========================' \
+'# ROS 環境' \
+'# ==========================' \
 'source /opt/ros/humble/setup.bash' \
 'source /opt/roomba_ws/install/setup.bash' \
 'source /opt/ydlidar_ws/install/setup.bash' \
+'' \
+'# ==========================' \
+'# 自作 ros2_ws（初回のみ build）' \
+'# ==========================' \
+'if [ -d /opt/ros2_ws/src ]; then' \
+'  cd /opt/ros2_ws' \
+'  if [ ! -f /opt/ros2_ws/install/setup.bash ]; then' \
+'    echo "[INFO] ros2_ws detected: first build"' \
+'    colcon build --symlink-install' \
+'  else' \
+'    echo "[INFO] ros2_ws already built: skip build"' \
+'  fi' \
+'  source /opt/ros2_ws/install/setup.bash' \
+'else' \
+'  echo "[WARN] ros2_ws not found: skipping"' \
+'fi' \
+'' \
+'# ==========================' \
+'# CAT UI 起動（node / launch は後で）' \
+'# ==========================' \
 'cd /opt/catui/CAT-UI-ROS2node' \
-'./CAT-UI' \
+'exec ./CAT-UI' \
 > /usr/local/bin/run-catui && chmod +x /usr/local/bin/run-catui
 
 # =========================================================

@@ -2,8 +2,12 @@
 Version=1.0
 Type=Application
 Name=Cat Robot System
-Comment=ROS2 + Roomba + CAT UI
-Exec=/bin/bash -c "$HOME/cat-iot-robot-ui/run.sh"
+Comment=ROS2 + Roomba + LiDAR + CAT UI
+# bash -c を介すことで、$HOME を確実に解決させます
+Exec=bash -c 'bash "$HOME/cat-iot-robot-ui/run.sh"'
+# エラー時にターミナルが開いてログが見えるように true に設定
 Terminal=true
 Icon=utilities-terminal
 Categories=Development;
+# ダブルクリック時の反応を良くする
+StartupNotify=true
