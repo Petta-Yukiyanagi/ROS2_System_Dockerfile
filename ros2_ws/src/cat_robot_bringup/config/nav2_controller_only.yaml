@@ -1,0 +1,62 @@
+# ================================
+# Nav2 Controller-only configuration
+# ================================
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: false
+    enabled: false
+
+planner_server:
+  ros__parameters:
+    enabled: false
+
+map_server:
+  ros__parameters:
+    enabled: false
+
+amcl:
+  ros__parameters:
+    enabled: false
+
+controller_server:
+  ros__parameters:
+    use_sim_time: false
+    controller_frequency: 20.0
+    min_x_velocity_threshold: 0.01
+    min_theta_velocity_threshold: 0.01
+
+    controller_plugins: ["FollowPath"]
+
+    FollowPath:
+      plugin: "dwb_core::DWBLocalPlanner"
+      max_vel_x: 0.3
+      max_vel_theta: 1.0
+      acc_lim_x: 0.5
+      acc_lim_theta: 1.5
+
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      update_frequency: 10.0
+      publish_frequency: 5.0
+      global_frame: odom
+      robot_base_frame: base_link
+      rolling_window: true
+      width: 3.0
+      height: 3.0
+      resolution: 0.05
+      plugins: ["obstacle_layer", "inflation_layer"]
+
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        observation_sources: scan
+        scan:
+          topic: /scan
+          clearing: true
+          marking: true
+          data_type: "LaserScan"
+
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        inflation_radius: 0.5
