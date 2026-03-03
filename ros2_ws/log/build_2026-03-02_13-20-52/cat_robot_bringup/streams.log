@@ -1,0 +1,23 @@
+[4.079s] Invoking command in '/opt/ros2_ws/build/cat_robot_bringup': PYTHONPATH=/opt/ros2_ws/build/cat_robot_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/opt/ros2_ws/install/cat_robot_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /opt/ros2_ws/build/cat_robot_bringup/build --no-deps symlink_data
+[5.100s] running develop
+[5.557s] running egg_info
+[5.557s] creating cat_robot_bringup.egg-info
+[5.558s] writing cat_robot_bringup.egg-info/PKG-INFO
+[5.559s] writing dependency_links to cat_robot_bringup.egg-info/dependency_links.txt
+[5.559s] writing entry points to cat_robot_bringup.egg-info/entry_points.txt
+[5.560s] writing requirements to cat_robot_bringup.egg-info/requires.txt
+[5.564s] writing top-level names to cat_robot_bringup.egg-info/top_level.txt
+[5.564s] writing manifest file 'cat_robot_bringup.egg-info/SOURCES.txt'
+[5.568s] reading manifest file 'cat_robot_bringup.egg-info/SOURCES.txt'
+[5.569s] writing manifest file 'cat_robot_bringup.egg-info/SOURCES.txt'
+[5.571s] running build_ext
+[5.572s] Creating /opt/ros2_ws/install/cat_robot_bringup/lib/python3.10/site-packages/cat-robot-bringup.egg-link (link to .)
+[5.579s] 
+[5.579s] Installed /opt/ros2_ws/build/cat_robot_bringup
+[5.579s] running symlink_data
+[5.579s] creating /opt/ros2_ws/install/cat_robot_bringup/share/ament_index
+[5.579s] creating /opt/ros2_ws/install/cat_robot_bringup/share/ament_index/resource_index
+[5.579s] creating /opt/ros2_ws/install/cat_robot_bringup/share/ament_index/resource_index/packages
+[5.579s] symbolically linking /opt/ros2_ws/build/cat_robot_bringup/resource/cat_robot_bringup -> /opt/ros2_ws/install/cat_robot_bringup/share/ament_index/resource_index/packages
+[5.580s] symbolically linking /opt/ros2_ws/build/cat_robot_bringup/package.xml -> /opt/ros2_ws/install/cat_robot_bringup/share/cat_robot_bringup
+[5.814s] Invoked command in '/opt/ros2_ws/build/cat_robot_bringup' returned '0': PYTHONPATH=/opt/ros2_ws/build/cat_robot_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/opt/ros2_ws/install/cat_robot_bringup/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /opt/ros2_ws/build/cat_robot_bringup/build --no-deps symlink_data

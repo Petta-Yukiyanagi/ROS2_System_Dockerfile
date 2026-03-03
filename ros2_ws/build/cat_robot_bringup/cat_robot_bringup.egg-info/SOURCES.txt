@@ -1,0 +1,12 @@
+package.xml
+setup.cfg
+setup.py
+cat_robot_bringup/__init__.py
+cat_robot_bringup.egg-info/PKG-INFO
+cat_robot_bringup.egg-info/SOURCES.txt
+cat_robot_bringup.egg-info/dependency_links.txt
+cat_robot_bringup.egg-info/entry_points.txt
+cat_robot_bringup.egg-info/requires.txt
+cat_robot_bringup.egg-info/top_level.txt
+cat_robot_bringup.egg-info/zip-safe
+resource/cat_robot_bringup

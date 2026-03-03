@@ -97,6 +97,22 @@ RUN mkdir -p /opt/ros2_ws/src && \
     chmod -R a+rwx /opt/ros2_ws
 
 # =========================================================
+# cat_robot_bringup（システム起動用 launch）
+# =========================================================
+RUN git clone --depth 1 https://github.com/Petta-Yukiyanagi/cat_robot_bringup.git \
+      /opt/ros2_ws/src/cat_robot_bringup
+
+# =========================================================
+# ros2_ws build（catui_bridge + cat_robot_bringup）
+# =========================================================
+WORKDIR /opt/ros2_ws
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
+    source /opt/roomba_ws/install/setup.bash && \
+    source /opt/ydlidar_ws/install/setup.bash && \
+    rosdep install --from-paths src --ignore-src -r -y && \
+    colcon build --symlink-install"
+
+# =========================================================
 # UI + ROS2 起動スクリプト（ros2_ws 初回ビルドのみ）
 # =========================================================
 RUN printf '%s\n' \
@@ -111,25 +127,15 @@ RUN printf '%s\n' \
 'source /opt/ros/humble/setup.bash' \
 'source /opt/roomba_ws/install/setup.bash' \
 'source /opt/ydlidar_ws/install/setup.bash' \
+'source /opt/ros2_ws/install/setup.bash' \
+'' \
+'echo "[INFO] starting cat_robot_bringup"' \
+'ros2 launch cat_robot_bringup system.launch.py &' \
+'BRINGUP_PID=$!' \
+'sleep 2' \
 '' \
 '# ==========================' \
-'# 自作 ros2_ws（初回のみ build）' \
-'# ==========================' \
-'if [ -d /opt/ros2_ws/src ]; then' \
-'  cd /opt/ros2_ws' \
-'  if [ ! -f /opt/ros2_ws/install/setup.bash ]; then' \
-'    echo "[INFO] ros2_ws detected: first build"' \
-'    colcon build --symlink-install' \
-'  else' \
-'    echo "[INFO] ros2_ws already built: skip build"' \
-'  fi' \
-'  source /opt/ros2_ws/install/setup.bash' \
-'else' \
-'  echo "[WARN] ros2_ws not found: skipping"' \
-'fi' \
-'' \
-'# ==========================' \
-'# CAT UI 起動（node / launch は後で）' \
+'# CAT UI 起動' \
 '# ==========================' \
 'cd /opt/catui/CAT-UI-ROS2node' \
 'exec ./CAT-UI' \

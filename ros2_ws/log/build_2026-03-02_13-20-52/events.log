@@ -1,0 +1,86 @@
+[0.000000] (-) TimerEvent: {}
+[0.010678] (cat_robot_bringup) JobQueued: {'identifier': 'cat_robot_bringup', 'dependencies': OrderedDict()}
+[0.010849] (cat_robot_bringup) JobStarted: {'identifier': 'cat_robot_bringup'}
+[0.100245] (-) TimerEvent: {}
+[0.200739] (-) TimerEvent: {}
+[0.301505] (-) TimerEvent: {}
+[0.406196] (-) TimerEvent: {}
+[0.508874] (-) TimerEvent: {}
+[0.611933] (-) TimerEvent: {}
+[0.716957] (-) TimerEvent: {}
+[0.823092] (-) TimerEvent: {}
+[0.923567] (-) TimerEvent: {}
+[1.024642] (-) TimerEvent: {}
+[1.126541] (-) TimerEvent: {}
+[1.227755] (-) TimerEvent: {}
+[1.332625] (-) TimerEvent: {}
+[1.456767] (-) TimerEvent: {}
+[1.560974] (-) TimerEvent: {}
+[1.661387] (-) TimerEvent: {}
+[1.765163] (-) TimerEvent: {}
+[1.866825] (-) TimerEvent: {}
+[1.969165] (-) TimerEvent: {}
+[2.070856] (-) TimerEvent: {}
+[2.173093] (-) TimerEvent: {}
+[2.276024] (-) TimerEvent: {}
+[2.378461] (-) TimerEvent: {}
+[2.483170] (-) TimerEvent: {}
+[2.584081] (-) TimerEvent: {}
+[2.688818] (-) TimerEvent: {}
+[2.797003] (-) TimerEvent: {}
+[2.897466] (-) TimerEvent: {}
+[2.998141] (-) TimerEvent: {}
+[3.098681] (-) TimerEvent: {}
+[3.202667] (-) TimerEvent: {}
+[3.308967] (-) TimerEvent: {}
+[3.409501] (-) TimerEvent: {}
+[3.513043] (-) TimerEvent: {}
+[3.617925] (-) TimerEvent: {}
+[3.726541] (-) TimerEvent: {}
+[3.829051] (-) TimerEvent: {}
+[3.933074] (-) TimerEvent: {}
+[4.047821] (-) TimerEvent: {}
+[4.085304] (cat_robot_bringup) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/opt/ros2_ws/build/cat_robot_bringup/build', '--no-deps', 'symlink_data'], 'cwd': '/opt/ros2_ws/build/cat_robot_bringup', 'env': {'HOSTNAME': 'user', 'GIT_ASKPASS': '/root/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass.sh', 'SHLVL': '2', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib', 'BROWSER': '/root/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/bin/helpers/browser.sh', 'HOME': '/root', 'OLDPWD': '/opt/ros2_ws/src', 'TERM_PROGRAM_VERSION': '1.109.5', 'VSCODE_IPC_HOOK_CLI': '/tmp/vscode-ipc-b720cdea-9a51-4278-9aa8-559686431935.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/root/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/root/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/node', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'COLORTERM': 'truecolor', 'REMOTE_CONTAINERS': 'true', 'ROS_DISTRO': 'humble', 'REMOTE_CONTAINERS_IPC': '/tmp/vscode-remote-containers-ipc-c922254d-dad8-44a6-b487-42b7a76ff5f2.sock', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/opt/ros/humble/bin:/root/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin', 'REMOTE_CONTAINERS_SOCKETS': '["/root/.gnupg/S.gpg-agent"]', 'DISPLAY': ':0', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'VSCODE_GIT_IPC_HANDLE': '/tmp/vscode-git-0d00d62299.sock', 'TERM_PROGRAM': 'vscode', 'CAT_DEBUG': '1', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'DEBIAN_FRONTEND': 'noninteractive', 'SHELL': '/bin/bash', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/opt/ros2_ws/build/cat_robot_bringup', 'LC_ALL': 'C.UTF-8', 'PYTHONPATH': '/opt/ros2_ws/build/cat_robot_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/opt/ros2_ws/install/cat_robot_bringup/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'CAT_MODE': 'DEVELOPMENT'}, 'shell': False}
+[4.160942] (-) TimerEvent: {}
+[4.264693] (-) TimerEvent: {}
+[4.365269] (-) TimerEvent: {}
+[4.467687] (-) TimerEvent: {}
+[4.569126] (-) TimerEvent: {}
+[4.673970] (-) TimerEvent: {}
+[4.789000] (-) TimerEvent: {}
+[4.891757] (-) TimerEvent: {}
+[4.993471] (-) TimerEvent: {}
+[5.099614] (-) TimerEvent: {}
+[5.110693] (cat_robot_bringup) StdoutLine: {'line': b'running develop\n'}
+[5.200989] (-) TimerEvent: {}
+[5.301539] (-) TimerEvent: {}
+[5.404575] (-) TimerEvent: {}
+[5.509119] (-) TimerEvent: {}
+[5.567647] (cat_robot_bringup) StdoutLine: {'line': b'running egg_info\n'}
+[5.567959] (cat_robot_bringup) StdoutLine: {'line': b'creating cat_robot_bringup.egg-info\n'}
+[5.569103] (cat_robot_bringup) StdoutLine: {'line': b'writing cat_robot_bringup.egg-info/PKG-INFO\n'}
+[5.569430] (cat_robot_bringup) StdoutLine: {'line': b'writing dependency_links to cat_robot_bringup.egg-info/dependency_links.txt\n'}
+[5.569518] (cat_robot_bringup) StdoutLine: {'line': b'writing entry points to cat_robot_bringup.egg-info/entry_points.txt\n'}
+[5.570581] (cat_robot_bringup) StdoutLine: {'line': b'writing requirements to cat_robot_bringup.egg-info/requires.txt\n'}
+[5.574712] (cat_robot_bringup) StdoutLine: {'line': b'writing top-level names to cat_robot_bringup.egg-info/top_level.txt\n'}
+[5.575076] (cat_robot_bringup) StdoutLine: {'line': b"writing manifest file 'cat_robot_bringup.egg-info/SOURCES.txt'\n"}
+[5.578897] (cat_robot_bringup) StdoutLine: {'line': b"reading manifest file 'cat_robot_bringup.egg-info/SOURCES.txt'\n"}
+[5.579784] (cat_robot_bringup) StdoutLine: {'line': b"writing manifest file 'cat_robot_bringup.egg-info/SOURCES.txt'\n"}
+[5.582210] (cat_robot_bringup) StdoutLine: {'line': b'running build_ext\n'}
+[5.582761] (cat_robot_bringup) StdoutLine: {'line': b'Creating /opt/ros2_ws/install/cat_robot_bringup/lib/python3.10/site-packages/cat-robot-bringup.egg-link (link to .)\n'}
+[5.589069] (cat_robot_bringup) StdoutLine: {'line': b'\n'}
+[5.589503] (cat_robot_bringup) StdoutLine: {'line': b'Installed /opt/ros2_ws/build/cat_robot_bringup\n'}
+[5.589729] (cat_robot_bringup) StdoutLine: {'line': b'running symlink_data\n'}
+[5.589884] (cat_robot_bringup) StdoutLine: {'line': b'creating /opt/ros2_ws/install/cat_robot_bringup/share/ament_index\n'}
+[5.590048] (cat_robot_bringup) StdoutLine: {'line': b'creating /opt/ros2_ws/install/cat_robot_bringup/share/ament_index/resource_index\n'}
+[5.590175] (cat_robot_bringup) StdoutLine: {'line': b'creating /opt/ros2_ws/install/cat_robot_bringup/share/ament_index/resource_index/packages\n'}
+[5.590294] (cat_robot_bringup) StdoutLine: {'line': b'symbolically linking /opt/ros2_ws/build/cat_robot_bringup/resource/cat_robot_bringup -> /opt/ros2_ws/install/cat_robot_bringup/share/ament_index/resource_index/packages\n'}
+[5.590377] (cat_robot_bringup) StdoutLine: {'line': b'symbolically linking /opt/ros2_ws/build/cat_robot_bringup/package.xml -> /opt/ros2_ws/install/cat_robot_bringup/share/cat_robot_bringup\n'}
+[5.609485] (-) TimerEvent: {}
+[5.710263] (-) TimerEvent: {}
+[5.810885] (-) TimerEvent: {}
+[5.824321] (cat_robot_bringup) CommandEnded: {'returncode': 0}
+[5.911136] (-) TimerEvent: {}
+[6.018190] (-) TimerEvent: {}
+[6.019642] (cat_robot_bringup) JobEnded: {'identifier': 'cat_robot_bringup', 'rc': 0}
+[6.022605] (-) EventReactorShutdown: {}
